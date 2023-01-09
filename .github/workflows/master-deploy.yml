@@ -43,3 +43,9 @@ jobs:
             --recursive \
             --region ap-northeast-2 \
             build s3://$AWS_S3_BUCKET
+
+      - name: Invalidation
+        env:
+          AWS_CLOUDFRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_ID --paths "/*"
