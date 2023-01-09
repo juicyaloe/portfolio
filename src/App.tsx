@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+
+import CssBaseline from '@mui/material/CssBaseline';
+
+import Main from './pages/main';
+import SideBar from './components/layout/sideBar';
+import Test from './pages/test';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <CssBaseline />
+      <SideBar />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Fragment>
   );
 }
 
