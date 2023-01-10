@@ -15,7 +15,7 @@ jobs:
 
       - name: Setting .env
         run: |
-          echo "REACT_APP_TEST=${{ secrets.REACT_APP_TEST }}" >> .env
+          echo "REACT_APP_API_DOMAIN=${{ secrets.REACT_APP_API_DOMAIN }}" >> .env
 
       - name: Cache node modules
         uses: actions/cache@v1

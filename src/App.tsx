@@ -7,6 +7,7 @@ import SideBar from './components/layout/sideBar';
 import Main from './pages/main';
 import Guest from './pages/guest';
 import Test from './pages/test';
+import GuestForm from './pages/guestForm';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/guest" element={<Guest />} />
+        <Route path="/guest/form" element={<GuestForm />} />
         <Route path="/test" element={<Test />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

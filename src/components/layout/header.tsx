@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import EditIcon from '@mui/icons-material/Edit';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import HomeIcon from '@mui/icons-material/Home';
 import { useDispatch } from 'react-redux';
 import { open } from '../../store/sideBarSlice';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderWrap = styled.div`
   width: 95%;
@@ -35,12 +35,16 @@ const CustomButton = styled(Button)`
 `;
 
 export default function Header() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (
     <HeaderWrap>
       <CustomButton onClick={() => dispatch(open())}>
         <FormatListBulletedIcon /> MENU
+      </CustomButton>
+      <CustomButton onClick={() => navigate('/')}>
+        <HomeIcon /> 메인 화면으로
       </CustomButton>
     </HeaderWrap>
   );
