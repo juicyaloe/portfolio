@@ -13,7 +13,10 @@ export default function Main() {
 
   useEffect(() => {
     fetch('https://api.juicyaloe.com/api/')
-      .then((response) => response.json())
+      .then((response) => {
+        console.log(response.status);
+        return response.json();
+      })
       .then((json) => setdata(json))
       .catch((err) => console.log(err));
   }, []);
