@@ -2,9 +2,10 @@ import React, { Fragment } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import CssBaseline from '@mui/material/CssBaseline';
+import SideBar from './components/layout/sideBar';
 
 import Main from './pages/main';
-import SideBar from './components/layout/sideBar';
+import Guest from './pages/guest';
 import Test from './pages/test';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <SideBar />
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/guest" element={<Guest />} />
         <Route path="/test" element={<Test />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

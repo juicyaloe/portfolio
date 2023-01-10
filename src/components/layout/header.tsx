@@ -42,7 +42,6 @@ export default function Header() {
       <CustomButton onClick={() => dispatch(open())}>
         <FormatListBulletedIcon /> MENU
       </CustomButton>
-      Test
     </HeaderWrap>
   );
 }
