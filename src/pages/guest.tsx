@@ -62,10 +62,19 @@ export default function Guest() {
   if (guestBook.length < 1) {
     return (
       <CommonStructure>
-        <Typography variant="h6">기록된 방명록</Typography>
-        <Typography variant="subtitle1">
-          방명록을 불러오는 중입니다..
-        </Typography>
+        <GuestBookWrap>
+          <Typography variant="h6">기록된 방명록</Typography>
+          <Typography sx={{ paddingTop: 2 }} variant="subtitle1">
+            기록된 방명록이 없습니다.
+          </Typography>
+          <Fab
+            sx={fabStyle}
+            color="secondary"
+            onClick={() => navigate('/guest/form')}
+          >
+            <EditIcon />
+          </Fab>
+        </GuestBookWrap>
       </CommonStructure>
     );
   }
