@@ -14,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { Fab } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const fabStyle = {
   marginTop: 3,
@@ -46,6 +46,9 @@ async function getGuestBook() {
 }
 
 export default function Guest() {
+  const [searchParams] = useSearchParams();
+  const successForm = searchParams.get('n') !== null;
+
   const navigate = useNavigate();
   const [guestBook, setGuestBook] = useState<GuestBookType[]>([]);
 
@@ -64,7 +67,11 @@ export default function Guest() {
       <CommonStructure>
         <GuestBookWrap>
           <Typography variant="h6">기록된 방명록</Typography>
-          <Typography sx={{ paddingTop: 2 }} variant="subtitle1">
+          <Typography variant="subtitle2">
+            써주신 글 들 중 검토를 받은 글들이 여기에 보입니다.
+          </Typography>
+
+          <Typography sx={{ paddingTop: 3 }} variant="subtitle1">
             기록된 방명록이 없습니다.
           </Typography>
           <Fab
@@ -74,6 +81,11 @@ export default function Guest() {
           >
             <EditIcon />
           </Fab>
+          {successForm && (
+            <Typography variant="subtitle2">
+              글쓰기 성공! 검토 후 반영하겠습니다!
+            </Typography>
+          )}
         </GuestBookWrap>
       </CommonStructure>
     );
@@ -83,10 +95,13 @@ export default function Guest() {
     <CommonStructure>
       <GuestBookWrap>
         <Typography variant="h6">기록된 방명록</Typography>
+        <Typography variant="subtitle2">
+          써주신 글 들 중 검토를 받은 글들이 여기에 보입니다.
+        </Typography>
 
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {guestBook.map((item, i) => (
-            <>
+            <Fragment key={i}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar />
@@ -114,7 +129,7 @@ export default function Guest() {
               {guestBook.length !== i + 1 && (
                 <Divider variant="inset" component="li" />
               )}
-            </>
+            </Fragment>
           ))}
         </List>
         <Fab
@@ -124,6 +139,11 @@ export default function Guest() {
         >
           <EditIcon />
         </Fab>
+        {successForm && (
+          <Typography variant="subtitle2">
+            글쓰기 성공! 검토 후 반영하겠습니다!
+          </Typography>
+        )}
       </GuestBookWrap>
     </CommonStructure>
   );

@@ -62,7 +62,7 @@ export default function GuestForm() {
       return;
     }
 
-    navigate('/guest', { replace: true });
+    navigate('/guest?n=true', { replace: true });
   };
 
   return (
