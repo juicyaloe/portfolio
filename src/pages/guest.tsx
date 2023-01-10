@@ -19,6 +19,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 const fabStyle = {
   marginTop: 3,
   marginLeft: 'auto',
+  marginBottom: 5,
 };
 
 const GuestBookWrap = styled.div`
