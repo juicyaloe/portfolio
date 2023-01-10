@@ -12,7 +12,7 @@ export default function Main() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_DOMAIN + '/api/')
+    fetch('https://api.juicyaloe.com/api/')
       .then((response) => response.json())
       .then((json) => setdata(json))
       .catch((err) => console.log(err));
