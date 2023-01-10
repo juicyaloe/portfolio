@@ -12,21 +12,24 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ImageIcon from '@mui/icons-material/Image';
-import QuizIcon from '@mui/icons-material/Quiz';
+
+import EditIcon from '@mui/icons-material/Edit';
+import HandymanIcon from '@mui/icons-material/Handyman';
 
 interface SideBarDataType {
   icon: ReactNode;
   text: string;
+  action: any;
 }
 
 export default function SideBar() {
   const isActive = useSelector((state: RootState) => state.sideBar.isActive);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const sideBarData: SideBarDataType[] = [
-    { icon: <ImageIcon />, text: '사진' },
-    { icon: <QuizIcon />, text: '테스트' },
+    { icon: <EditIcon />, text: '방명록', action: () => navigate('/guest') },
+    { icon: <HandymanIcon />, text: '공사중', action: () => navigate('/test') },
   ];
 
   const closeDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -52,7 +55,7 @@ export default function SideBar() {
         <List>
           {sideBarData.map((data, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => {}}>
+              <ListItemButton onClick={data.action}>
                 <ListItemIcon>{data.icon}</ListItemIcon>
                 <ListItemText primary={data.text} />
               </ListItemButton>
