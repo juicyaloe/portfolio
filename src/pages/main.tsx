@@ -4,6 +4,7 @@ import { open } from '../store/sideBarSlice';
 import CommonStructure from '../components/layout/structure/commonStructure';
 
 export default function Main() {
+  console.log('aa', process.env.REACT_APP_TEST);
   return (
     <CommonStructure>
       제 페이지에 오신 것을 환영합니다. <br />
