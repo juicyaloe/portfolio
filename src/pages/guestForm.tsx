@@ -66,7 +66,7 @@ export default function GuestForm() {
   };
 
   return (
-    <CommonStructure>
+    <CommonStructure title="글 쓰기">
       <Box
         component="form"
         sx={{

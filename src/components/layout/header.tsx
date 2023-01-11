@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { useDispatch } from 'react-redux';
 import { open } from '../../store/sideBarSlice';
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 const HeaderWrap = styled.div`
   width: 95%;
@@ -16,7 +17,7 @@ const HeaderWrap = styled.div`
 
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 
   @media screen and (min-width: 769px) {
@@ -34,7 +35,11 @@ const CustomButton = styled(Button)`
   gap: 3px;
 `;
 
-export default function Header() {
+interface HeaderType {
+  title: string;
+}
+
+export default function Header({ title }: HeaderType) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,8 +48,10 @@ export default function Header() {
       <CustomButton onClick={() => dispatch(open())}>
         <FormatListBulletedIcon /> MENU
       </CustomButton>
+
+      <Typography>{title}</Typography>
       <CustomButton onClick={() => navigate('/')}>
-        <HomeIcon /> 메인 화면으로
+        <HomeIcon /> HOME
       </CustomButton>
     </HeaderWrap>
   );

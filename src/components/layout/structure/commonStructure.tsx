@@ -5,12 +5,13 @@ import Body from '../body';
 
 interface CommonType {
   children: ReactNode;
+  title: string;
 }
 
-export default function CommonStructure({ children }: CommonType) {
+export default function CommonStructure({ children, title }: CommonType) {
   return (
     <Container>
-      <Header />
+      <Header title={title} />
       <Body>{children}</Body>
     </Container>
   );
