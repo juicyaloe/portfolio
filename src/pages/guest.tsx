@@ -1,20 +1,14 @@
 import { useState, useEffect, Fragment } from 'react';
-import CommonStructure from '../components/layout/structure/commonStructure';
-import Typography from '@mui/material/Typography';
-import styled from '@emotion/styled';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import EditIcon from '@mui/icons-material/Edit';
 
-import moment from 'moment';
-import 'moment/locale/ko';
 import { Fab } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import GuestStructure from '../components/pages-components/guest/guestStructure';
+import SearchedGuestBook from '../components/pages-components/guest/searchedGuestBook';
 
 const fabStyle = {
   marginTop: 3,
@@ -22,18 +16,7 @@ const fabStyle = {
   marginBottom: 5,
 };
 
-const GuestBookWrap = styled.div`
-  padding-top: 10px;
-
-  width: 95%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 40;
-  align-items: center;
-`;
-interface GuestBookType {
+export interface GuestBookType {
   id: number;
   nickname: string;
   content: string;
@@ -42,110 +25,82 @@ interface GuestBookType {
   updated_at: string;
 }
 
-async function getGuestBook() {
-  return await fetch(process.env.REACT_APP_API_DOMAIN + '/guestbook/');
+async function getGuestBookAPI() {
+  return await fetch(process.env.REACT_APP_API_DOMAIN + '/guestbook/public/');
 }
 
 export default function Guest() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  // 글쓰기 화면에서 넘어온 지 판단
   const successForm = searchParams.get('n') !== null;
 
-  const navigate = useNavigate();
   const [guestBook, setGuestBook] = useState<GuestBookType[]>([]);
+  const [stateMsg, setStateMsg] = useState<any>('방명록을 불러오는 중입니다..');
 
   useEffect(() => {
-    getGuestBook()
-      .then(async (response) => {
-        const apiData: GuestBookType[] = await response.json();
-        setGuestBook(apiData.filter((data) => data.is_show));
-      })
-      .catch((err) => {});
+    GetGuestBook();
   }, []);
 
-  // fallback
-  if (guestBook.length < 1) {
-    return (
-      <CommonStructure>
-        <GuestBookWrap>
-          <Typography variant="h6">기록된 방명록</Typography>
-          <Typography variant="subtitle2">
-            써주신 글 들 중 검토를 받은 글들이 여기에 보입니다.
-          </Typography>
+  const GetGuestBook = async () => {
+    const response = await getGuestBookAPI();
 
-          <Typography sx={{ paddingTop: 3 }} variant="subtitle1">
-            기록된 방명록이 없습니다.
-          </Typography>
-          <Fab
-            sx={fabStyle}
-            color="secondary"
-            onClick={() => navigate('/guest/form')}
-          >
-            <EditIcon />
-          </Fab>
-          {successForm && (
-            <Typography variant="subtitle2">
-              글쓰기 성공! 검토 후 반영하겠습니다!
-            </Typography>
-          )}
-        </GuestBookWrap>
-      </CommonStructure>
-    );
-  }
+    if (response.status !== 200) {
+      setStateMsg('오류가 발생했습니다. 잠시 후에 시도해주세요.');
+      return;
+    }
+
+    const tempData: GuestBookType[] = await response.json();
+
+    if (tempData.length < 1) {
+      setStateMsg('기록된 방명록이 없습니다.');
+      return;
+    }
+
+    setGuestBook([...tempData]);
+  };
 
   return (
-    <CommonStructure>
-      <GuestBookWrap>
-        <Typography variant="h6">기록된 방명록</Typography>
-        <Typography variant="subtitle2">
-          써주신 글 들 중 검토를 받은 글들이 여기에 보입니다.
-        </Typography>
-
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          {guestBook.map((item, i) => (
-            <Fragment key={i}>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={item.nickname}
-                  secondary={
-                    <Fragment>
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {item.content}
-                      </Typography>
-                      {' - ' +
-                        moment(item.created_at).format(
-                          'YY년 MM월 DD일, HH:mm:ss'
-                        )}
-                    </Fragment>
-                  }
-                />
-              </ListItem>
-              {guestBook.length !== i + 1 && (
-                <Divider variant="inset" component="li" />
-              )}
-            </Fragment>
-          ))}
-        </List>
-        <Fab
-          sx={fabStyle}
-          color="secondary"
-          onClick={() => navigate('/guest/form')}
-        >
-          <EditIcon />
-        </Fab>
-        {successForm && (
-          <Typography variant="subtitle2">
-            글쓰기 성공! 검토 후 반영하겠습니다!
+    <GuestStructure>
+      {successForm && (
+        <Fragment>
+          <Typography
+            sx={{ marginRight: 'auto', marginLeft: '2.5%' }}
+            color="darkblue"
+            variant="subtitle2"
+          >
+            글 작성이 완료되었습니다! 검토 후 반영될 예정입니다.
           </Typography>
-        )}
-      </GuestBookWrap>
-    </CommonStructure>
+          <Divider sx={{ width: '95%' }} />
+        </Fragment>
+      )}
+      {!successForm && (
+        <Fragment>
+          <Typography
+            sx={{ marginRight: 'auto', marginLeft: '2.5%' }}
+            variant="subtitle2"
+          >
+            우측 하단 글쓰기 버튼을 눌려 방명록을 작성해주세요.
+          </Typography>
+          <Divider sx={{ width: '95%' }} />
+        </Fragment>
+      )}
+
+      {guestBook.length !== 0 && <SearchedGuestBook guestBook={guestBook} />}
+      {guestBook.length === 0 && (
+        <Typography sx={{ marginTop: 3 }} variant="h6">
+          {stateMsg}
+        </Typography>
+      )}
+
+      <Fab
+        sx={fabStyle}
+        color="secondary"
+        onClick={() => navigate('/guest/form')}
+      >
+        <EditIcon />
+      </Fab>
+    </GuestStructure>
   );
 }
