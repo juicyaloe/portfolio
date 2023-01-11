@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment, useRef } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -14,6 +14,16 @@ const fabStyle = {
   marginTop: 3,
   marginLeft: 'auto',
   marginBottom: 5,
+};
+
+const fabFixedStyle = {
+  position: 'fixed',
+  right: '2.5%',
+  bottom: 16,
+
+  '@media (min-width: 769px)': {
+    right: '15%',
+  },
 };
 
 export interface GuestBookType {
@@ -39,9 +49,22 @@ export default function Guest() {
   const [guestBook, setGuestBook] = useState<GuestBookType[]>([]);
   const [stateMsg, setStateMsg] = useState<any>('방명록을 불러오는 중입니다..');
 
+  const [scrollFlag, setScrollFlag] = useState<boolean>(false);
+  const listRef = useRef<HTMLUListElement | null>(null);
+
   useEffect(() => {
     GetGuestBook();
   }, []);
+
+  useEffect(() => {
+    if (listRef.current) {
+      const screenwidth = window.innerHeight;
+      const listHeight = listRef.current?.clientHeight ?? 0;
+
+      if (screenwidth - listHeight < 250) setScrollFlag(true);
+      else setScrollFlag(false);
+    }
+  }, [guestBook]);
 
   const GetGuestBook = async () => {
     const response = await getGuestBookAPI();
@@ -87,7 +110,7 @@ export default function Guest() {
         </Fragment>
       )}
 
-      {guestBook.length !== 0 && <SearchedGuestBook guestBook={guestBook} />}
+      <SearchedGuestBook guestBook={guestBook} listRef={listRef} />
       {guestBook.length === 0 && (
         <Typography sx={{ marginTop: 3 }} variant="h6">
           {stateMsg}
@@ -95,7 +118,7 @@ export default function Guest() {
       )}
 
       <Fab
-        sx={fabStyle}
+        sx={scrollFlag ? fabFixedStyle : fabStyle}
         color="secondary"
         onClick={() => navigate('/guest/form')}
       >

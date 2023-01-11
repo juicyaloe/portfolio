@@ -14,13 +14,15 @@ import type { GuestBookType } from '../../../pages/guest';
 
 interface SearchedGuestBookType {
   guestBook: GuestBookType[];
+  listRef: React.MutableRefObject<HTMLUListElement | null>;
 }
 
 export default function SearchedGuestBook({
   guestBook,
+  listRef,
 }: SearchedGuestBookType) {
   return (
-    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+    <List sx={{ width: '100%', bgcolor: 'background.paper' }} ref={listRef}>
       {guestBook.map((item, i) => (
         <Fragment key={i}>
           <ListItem alignItems="flex-start">
