@@ -52,17 +52,25 @@ export default function GuestForm() {
       return;
     }
 
-    const response = await postGuestForm(currentNickname, currentContent);
+    postGuestForm(currentNickname, currentContent)
+      .then((response) => {
+        if (response.status !== 201) {
+          setContentError(true);
+          setErrorMsg(
+            '짧은 시간에 너무 많은 글을 작성했습니다. 잠시 후에 시도해주세요.'
+          );
+          return;
+        }
 
-    if (response.status !== 201) {
-      setContentError(true);
-      setErrorMsg(
-        '요청이 정상적으로 이루어지지 않았습니다. 잠시 후에 시도해주세요.'
-      );
-      return;
-    }
-
-    navigate('/guest?n=true', { replace: true });
+        navigate('/guest?n=true', { replace: true });
+      })
+      .catch((err) => {
+        setContentError(true);
+        setErrorMsg(
+          '일시적인 오류로 글 작성에 실패했습니다. 잠시 후에 시도해주세요.'
+        );
+        return;
+      });
   };
 
   return (

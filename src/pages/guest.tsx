@@ -51,10 +51,11 @@ export default function Guest() {
   const successForm = searchParams.get('n') !== null;
 
   // 방명록 데이터 불러오기
-  const { isLoading, data: guestBook } = useQuery<GuestBookType[]>(
-    ['guest-book'],
-    fetchGuestBook
-  );
+  const {
+    isLoading,
+    data: guestBook,
+    isError,
+  } = useQuery<GuestBookType[]>(['guest-book'], fetchGuestBook);
 
   // 글이 많으면, 글쓰기 버튼 fixed로 변경
   const [scrollFlag, setScrollFlag] = useState<boolean>(false);
@@ -108,6 +109,14 @@ export default function Guest() {
           기록된 방명록이 없습니다.
         </Typography>
       )}
+      {isError && (
+        <Typography sx={{ marginTop: 3, textAlign: 'center' }} variant="body1">
+          일시적인 오류로 방명록을 불러오지 못했습니다. <br />
+          잠시 후 시도해주세요.
+        </Typography>
+      )}
+
+      <div style={{ height: '60px' }}></div>
 
       <Fab
         sx={scrollFlag ? fabFixedStyle : fabStyle}
