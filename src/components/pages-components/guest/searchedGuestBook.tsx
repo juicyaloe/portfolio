@@ -30,6 +30,7 @@ export default function SearchedGuestBook({
               <Avatar />
             </ListItemAvatar>
             <ListItemText
+              sx={{ wordBreak: 'break-all' }}
               primary={item.nickname}
               secondary={
                 <Fragment>
