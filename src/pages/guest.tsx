@@ -9,6 +9,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import GuestStructure from '../components/pages-components/guest/guestStructure';
 import SearchedGuestBook from '../components/pages-components/guest/searchedGuestBook';
+import { useQuery } from '@tanstack/react-query';
+
+const domain = process.env.REACT_APP_API_DOMAIN;
 
 const fabStyle = {
   marginTop: 3,
@@ -35,27 +38,29 @@ export interface GuestBookType {
   updated_at: string;
 }
 
-async function getGuestBookAPI() {
-  return await fetch(process.env.REACT_APP_API_DOMAIN + '/guestbook/public/');
-}
+const fetchGuestBook = async () => {
+  const response = await fetch(domain + '/guestbook/public/');
+  return response.json();
+};
 
 export default function Guest() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   // 글쓰기 화면에서 넘어온 지 판단
+  const [searchParams] = useSearchParams();
   const successForm = searchParams.get('n') !== null;
 
-  const [guestBook, setGuestBook] = useState<GuestBookType[]>([]);
-  const [stateMsg, setStateMsg] = useState<any>('방명록을 불러오는 중입니다..');
+  // 방명록 데이터 불러오기
+  const { isLoading, data: guestBook } = useQuery<GuestBookType[]>(
+    ['guest-book'],
+    fetchGuestBook
+  );
 
+  // 글이 많으면, 글쓰기 버튼 fixed로 변경
   const [scrollFlag, setScrollFlag] = useState<boolean>(false);
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  useEffect(() => {
-    GetGuestBook();
-  }, []);
-
+  // 글쓰기 버튼이 화면 밑에 있는지 검사
   useEffect(() => {
     if (listRef.current) {
       const screenwidth = window.innerHeight;
@@ -65,24 +70,6 @@ export default function Guest() {
       else setScrollFlag(false);
     }
   }, [guestBook]);
-
-  const GetGuestBook = async () => {
-    const response = await getGuestBookAPI();
-
-    if (response.status !== 200) {
-      setStateMsg('오류가 발생했습니다. 잠시 후에 시도해주세요.');
-      return;
-    }
-
-    const tempData: GuestBookType[] = await response.json();
-
-    if (tempData.length < 1) {
-      setStateMsg('기록된 방명록이 없습니다.');
-      return;
-    }
-
-    setGuestBook([...tempData]);
-  };
 
   return (
     <GuestStructure>
@@ -110,10 +97,15 @@ export default function Guest() {
         </Fragment>
       )}
 
-      <SearchedGuestBook guestBook={guestBook} listRef={listRef} />
-      {guestBook.length === 0 && (
+      <SearchedGuestBook guestBook={guestBook ?? []} listRef={listRef} />
+      {isLoading && (
         <Typography sx={{ marginTop: 3 }} variant="h6">
-          {stateMsg}
+          방명록을 불러오는 중입니다..
+        </Typography>
+      )}
+      {!isLoading && guestBook?.length === 0 && (
+        <Typography sx={{ marginTop: 3 }} variant="h6">
+          기록된 방명록이 없습니다.
         </Typography>
       )}
 
