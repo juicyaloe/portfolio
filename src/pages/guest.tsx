@@ -10,24 +10,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import GuestStructure from '../components/pages-components/guest/guestStructure';
 import SearchedGuestBook from '../components/pages-components/guest/searchedGuestBook';
 import { useQuery } from '@tanstack/react-query';
-
-const domain = process.env.REACT_APP_API_DOMAIN;
-
-const fabStyle = {
-  marginTop: 3,
-  marginLeft: 'auto',
-  marginBottom: 5,
-};
-
-const fabFixedStyle = {
-  position: 'fixed',
-  right: '2.5%',
-  bottom: 16,
-
-  '@media (min-width: 769px)': {
-    right: '15%',
-  },
-};
+import { fabStyle, fabFixedStyle } from '../components/style/bottomFab';
 
 export interface GuestBookType {
   id: number;
@@ -39,7 +22,9 @@ export interface GuestBookType {
 }
 
 const fetchGuestBook = async () => {
-  const response = await fetch(domain + '/guestbook/public/');
+  const response = await fetch(
+    process.env.REACT_APP_API_DOMAIN + '/guestbook/public/'
+  );
   return response.json();
 };
 
