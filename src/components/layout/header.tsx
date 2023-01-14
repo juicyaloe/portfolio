@@ -35,6 +35,16 @@ const CustomButton = styled(Button)`
 
   display: flex;
   gap: 3px;
+
+  & > p {
+    display: none;
+  }
+
+  @media screen and (min-width: 769px) {
+    & > p {
+      display: inline;
+    }
+  }
 `;
 
 interface HeaderType {
@@ -48,12 +58,12 @@ export default function Header({ title }: HeaderType) {
   return (
     <HeaderWrap>
       <CustomButton onClick={() => dispatch(open())}>
-        <FormatListBulletedIcon /> MENU
+        <FormatListBulletedIcon /> <p>MENU</p>
       </CustomButton>
 
       <Typography>{title}</Typography>
       <CustomButton onClick={() => navigate('/')}>
-        <HomeIcon /> HOME
+        <HomeIcon /> <p>HOME</p>
       </CustomButton>
     </HeaderWrap>
   );
