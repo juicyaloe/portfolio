@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { open } from '../store/sideBarSlice';
-import CommonStructure from '../components/layout/structure/commonStructure';
+import CommonStructure from '../components/structure/commonStructure';
 
 export default function Main() {
   return (

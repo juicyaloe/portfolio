@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import CommonStructure from '../components/layout/structure/commonStructure';
+import CommonStructure from '../components/structure/commonStructure';
 
 export default function Test() {
   const navigate = useNavigate();

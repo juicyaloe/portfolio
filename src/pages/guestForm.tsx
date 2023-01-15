@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import CommonStructure from '../components/layout/structure/commonStructure';
+import CommonStructure from '../components/structure/commonStructure';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';

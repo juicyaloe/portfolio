@@ -10,7 +10,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import GuestStructure from '../components/pages-components/guest/guestStructure';
 import SearchedGuestBook from '../components/pages-components/guest/searchedGuestBook';
 import { useQuery } from '@tanstack/react-query';
-import { fabStyle, fabFixedStyle } from '../components/style/bottomFab';
+import { fabStyle, fabFixedStyle } from '../style/bottomFab';
 
 export interface GuestBookType {
   id: number;
