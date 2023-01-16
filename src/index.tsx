@@ -9,10 +9,16 @@ import { store } from './store/store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+import '@fontsource/noto-sans-kr/400.css';
+import '@fontsource/noto-sans-kr/700.css';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Noto Sans KR', sans-serif",
+  },
+});
 
 const queryClient = new QueryClient();
 
@@ -23,11 +29,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Provider>
+      </ThemeProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>
