@@ -1,12 +1,8 @@
 import { useState } from 'react';
-
-import CommonStructure from '../components/structure/commonStructure';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import EditIcon from '@mui/icons-material/Edit';
-import Fab from '@mui/material/Fab';
 import { useNavigate } from 'react-router-dom';
 
+import GuestFormStructure from '../components/pages-components/guestForm/guestFormStructure';
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -74,55 +70,40 @@ export default function GuestForm() {
   };
 
   return (
-    <CommonStructure title="글 쓰기">
-      <Box
-        component="form"
-        sx={{
-          marginTop: 2,
-
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          alignItems: 'center',
-
-          '& .MuiTextField-root': { width: '95%' },
+    <GuestFormStructure>
+      <TextField
+        error={isNicknameError}
+        helperText={isNicknameError ? errorMsg : ''}
+        id="nickname-form"
+        label="닉네임(수정 가능)"
+        variant="standard"
+        defaultValue="익명"
+        onChange={(e: any) => {
+          setNicknameError(false);
+          setNickname(e.target.value);
         }}
-        autoComplete="off"
+      />
+      <TextField
+        error={isContentError}
+        helperText={isContentError ? errorMsg : ''}
+        id="content-form"
+        label="글"
+        multiline
+        variant="standard"
+        minRows={10}
+        onChange={(e: any) => {
+          setContentError(false);
+          setContent(e.target.value);
+        }}
+      />
+      <Button
+        sx={buttonStyle}
+        variant="outlined"
+        onClick={checkValidation}
+        endIcon={<SendIcon />}
       >
-        <TextField
-          error={isNicknameError}
-          helperText={isNicknameError ? errorMsg : ''}
-          id="nickname-form"
-          label="닉네임(수정 가능)"
-          variant="standard"
-          defaultValue="익명"
-          onChange={(e: any) => {
-            setNicknameError(false);
-            setNickname(e.target.value);
-          }}
-        />
-        <TextField
-          error={isContentError}
-          helperText={isContentError ? errorMsg : ''}
-          id="content-form"
-          label="글"
-          multiline
-          variant="standard"
-          minRows={10}
-          onChange={(e: any) => {
-            setContentError(false);
-            setContent(e.target.value);
-          }}
-        />
-        <Button
-          sx={buttonStyle}
-          variant="outlined"
-          onClick={checkValidation}
-          endIcon={<SendIcon />}
-        >
-          전송
-        </Button>
-      </Box>
-    </CommonStructure>
+        전송
+      </Button>
+    </GuestFormStructure>
   );
 }
