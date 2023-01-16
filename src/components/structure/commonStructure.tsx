@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import Container from '../container';
-import Header from '../header';
-import Body from '../body';
+import Container from '../layout/container';
+import Header from '../layout/header';
+import Body from '../layout/body';
 
 interface CommonType {
   children: ReactNode;

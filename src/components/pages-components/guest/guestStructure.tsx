@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import CommonStructure from '../../layout/structure/commonStructure';
+import CommonStructure from '../../structure/commonStructure';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
